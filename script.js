@@ -1,22 +1,41 @@
 
-// ================== ANIMAÇÃO DA SEÇÃO "SOBRE MIM" ==================
-// Seleciona a seção "Sobre Mim"
-const aboutSection = document.querySelector('.about');
+// ================== Animação do Título ==================
+// Seleciona o elemento do título e define variáveis para a animção
+const titleElement = document.querySelector('#name');
+const text = "CODEMASTER";
+let index = 0;
+let isTyping = true;
+let currentColor = document.documentElement.classList.contains('light') ? 'black' : '#fff';
 
-// Função para verificar se a seção está visível na tela
-function checkAboutVisibility() {
-  const rect = aboutSection.getBoundingClientRect();
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-  // Verifica se a seção está dentro da área visível da tela
-  if (rect.top <= windowHeight * 0.75 && rect.bottom >= 0) {
-    aboutSection.classList.add('visible'); // Adiciona a classe "visible"
-    window.removeEventListener('scroll', checkAboutVisibility); // Remove o listener após a animação
-  }
+// Função para animar o texto do título (digitação e apagamento)
+function animateText() {
+    if (isTyping) {
+        if (index < text.length) {
+            titleElement.textContent = text.slice(0, index + 1); // Adiciona uma letra ao título
+            index++;
+        } else {
+            isTyping = false; // Alterna para o modo de apagamento
+        }
+    } else {
+      if (index > 1) {
+            titleElement.textContent = text.slice(0, index - 1); // Remove uma letra do título
+            index--;
+      } else {
+          isTyping = true; // Alterna para o modo de digitação
+          // Alterna a cor do texto entre branco/preto e laranja
+          currentColor = currentColor === (document.documentElement.classList.contains('light') ? 'black' : '#fff') ? '#C94C16' : (document.documentElement.classList.contains('light') ? 'black' : '#fff'); 
+          titleElement.style.color = currentColor;
+      }
+    }
+    setTimeout(animateText, 300); // Define um intervalo para a próxima animação
 }
 
-// Adiciona um listener para o evento de scroll
-window.addEventListener('scroll', checkAboutVisibility);
+// Função para atualizar a cor do texto do título com base no tema
+function updateTextColor() {
+    currentColor = document.documentElement.classList.contains('light') ? 'black' : '#fff';
+    titleElement.style.color = currentColor;
+}
 
-// Verifica a visibilidade ao carregar a página (caso a seção já esteja visível)
-checkAboutVisibility();
+// Inicia a animação do título ao carregar a página
+document.addEventListener('DOMContentLoaded', animateText);
+updateTextColor();
