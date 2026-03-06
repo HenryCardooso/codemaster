@@ -6,4 +6,4 @@ A estrutura do site esta completa porem algumas funcionalidades não estão func
 5. ○ [ ] Animação da seção home
 6. ○ [ ] Animação das seções
 7. ○ [ ] Botão de voltar ao topo
-8. ○ [ ] Animação sobre mim
+8. ○ [ ] Carrossel
