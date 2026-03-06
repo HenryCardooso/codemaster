@@ -153,3 +153,132 @@ document.querySelector('.top a').addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Rola suavemente para o topo da página
 });
+
+// ================= CARROSEL DE PROJETOS =================
+// Seleciona os elementos do carrosel 
+const carouselSlides = document.querySelector('.carousel-slides');
+const slides = document.querySelectorAll('carousel-slide');
+const prevButton = document.querySelector('carousel-button.prev');
+const nextButton = document.querySelector('carousel-button.next');
+let currentSlide = 0 ;
+let autoSlideInterval;
+
+// função para exibir o slide atual
+function showSlide(slideIndex) {
+    slides.forEach(slide => {
+        slide.classList.remove('active');
+        slide.style.display = 'none';
+    });
+
+    //ajusta o indíce do slide para garantir que ele esteja dentro dos limites
+    if (slideIndex < 0) currentSlide = slides.length - 1;
+    else if (slideIndex >= slides.length) currentSlide = 0;
+    else currentSlide = slideIndex;
+
+    //exibe o slide atual
+    slides[currentSlide].classList.add('active');
+    slides[currentSlide].style.display = 'flex';
+    updateSlidePosition();
+}
+
+//Função para atualiza a posição do carrossel
+function updateSlidePosition() {
+    const slideWidth = slides[0].offsetWidth;
+    carouselSlides.style.transform = translateX;
+}
+
+//Função para avançar para o proximo slide
+function nextSlide() {
+    showSlide(currentSlide + 1);
+    resetAutoSlide(); //Reinicia o intervalo de transição automática
+}
+
+//Função para voltar ao slide anterior
+function prevslide() {
+    showSlide(currentSlide - 1);
+    resetAutoSlide(); //Reinicia o intervalo de transição automatica
+}
+
+//Função para iniciar a transição automática dos slides
+function startAutoSlide () {
+    autoSlideInterval = setInterval(nextSlide, 5000); //Avança o slide a cada 5 segundos
+}
+// Função para reiniciar a transição automática
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+}
+
+// Adiciona eventos de clique aos botões de navegação do carrosel
+nextButton.addEventListener('click', nextSlide);
+prevButton.addEventListener('click', prevSlide);
+
+// Inicializa o carrossel ao carregar a página
+window.addEventListener('load', () => {
+    showSlide(currentSlide);
+    startAutoSlide();
+
+    // Atualiza a posição do carrossel ao redimensionar a janela
+    window.addEventListener('resize', () => {
+        updateSlidePosition();
+    });
+});
+
+// Pausa a transição automática ao passar o mouse sobre o carrossel
+carouselSlides.parentElement.addEventListener('mouseenter', () => {
+clearInterval(autoSlideInterval)
+});
+
+// Retoma a transição automática ao remover o mouse do carrossel
+carouseSlides.parentElement.addEventListener('mouseleave', startAutoSlide);
+
+// ================= FORMULÁRIO DE CONTATO =================
+// Seleciona o formulário de contato e a mensagem de agradecimento
+const contactForm = document.getElementsById('contactForm');
+const thankYouMessage = document.getElementById('thankYouMessage');
+
+// Adiciona um evento de envio ao formulário
+contactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    thankYouMessage.style.display = 'block'; // Exibe a mensagem de agradecimento
+})
+// Envia os dados do formulário usando Fetch
+
+const formData = new FormData(contactForm);
+fetch(contactForm.action, {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json'}
+})
+
+.then(response => {
+    if (response.ok) {
+        setTimeout(() => window.location.reload(), 200); //Recarrega a página após 2 segundos     
+    } else {
+        alert('Erro ao enviar formulário. Tente novamente.');
+    }
+})
+    .catch(() => alert('Erro na conexão. Tente novamente.'
+    ));
+
+    // ================ ANIMÃÇÃO DA SEÇÃO "SOBRE MIM" ==================
+    // Seleciona a seção "Sobre mim"
+    const aboutSection = document.querySelector('.about');
+
+    // Função para verificar se a seção está visível na tela
+    function checkAboutVisibility() {
+        const rect = aboutSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+        // Verifica se a seção está dentro da área visível da tela
+        if (rect.top <= windowHeight * 0.75 && rect.bottom >= 0) {
+            aboutSection.classList.add('visible'); // Adiciona a classe 'VISIBLE'
+            window.removeEventListener('scroll', checkAboutVisibility); // Remove o listener a animação
+        }
+    }
+
+    // Adiciona um listener para o evento de scroll
+    window.addEventListener('scroll', checkAboutVisibility);
+
+    //Verifica a visibilidade ap carrefar a página (caso a seção já esteja visível)
+    checkAboutVisibility();
