@@ -60,3 +60,50 @@ const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
     document.documentElement.classList.toggle('light', savedTheme === 'light');
 }
+
+// ===================== ANIMAÇÃO DO TÍTULO ==================
+// Seleciona o elemento do título e define variáveis para a animação
+const titleElement = document.querySelector('#name');
+const text = "CODEMASTER"
+let index = 0;
+let isTyping = true;
+let currentColor = document.documentElement.classList.contains('light') ? 'black' : '#fff';
+
+// Função para animar o texto do título (digitação e apagamento)
+function animateText() {
+if (isTyping) {
+        if (index < text.length) {
+            titleElement.textContent = text.slice(0, index + 1); // Adicione uma letra ao título
+            index++;
+        } else {
+            isTyping = false; // Alterna para o modo de apagamento 
+        
+        }
+    } else {
+ }
+
+ if (index > 1) {
+      titleElement.textContent = text.slice(0, index - 1);
+      index--;
+    } else {
+      isTyping = true;
+
+      currentColor =
+        currentColor === (document.documentElement.classList.contains('light') ? 'black' : '#fff')
+        ? '#c94c16'
+        : (document.documentElement.classList.contains('light') ? 'black' : '#fff');
+
+      titleElement.style.color = currentColor;
+    }
+  }
+  setTimeout(animateText, 300);
+{}
+
+function updateTextColor() {
+  currentColor = document.documentElement.classList.contains('light') ? 'black' : '#fff';
+  titleElement.style.color = currentColor;
+}
+
+document.addEventListener('DOMContentLoaded', animateText);
+updateTextColor();
+
